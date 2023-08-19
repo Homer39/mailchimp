@@ -1,0 +1,42 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <a type="button" class="btn btn-block btn-outline-primary col-2 mb-3"
+       href="#">Добавить рассылку</a>
+
+    <table class="table table-hover">
+        <thead>
+        <tr text-center match-height>
+            <th>Время старта</th>
+            <th>Время окончания</th>
+            <th>Период</th>
+            <th>Статус</th>
+            <th>Сообщение</th>
+            <th></th>
+        </tr>
+        </thead>
+        {% for object in object_list %}
+        <tr text-center match-height>
+            <td text-center match-height>
+                <a href="#" title="Изменить">{{ object.start_time }}</a>
+            </td>
+            <td text-center match-height>
+                <a href="#" title="Изменить">{{ object.end_time }}</a>
+            </td>
+            <td>{{ object.get_period_display }}</td>
+            <td>{{ object.get_status_display }}</td>
+            <td>{{ object.message }}</td>
+
+            <td text-center match-height>
+                <a type="button" class="btn btn-block btn-outline-primary"
+                   href="#">Изменить</a>
+                <a type="button" class="btn btn-block btn-outline-primary"
+                <a type="button" class="btn btn-danger btn-warning text-center match-height"
+                   href="#" title="Удалить"> X</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
