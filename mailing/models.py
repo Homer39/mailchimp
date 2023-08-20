@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 NULLABLE = {
@@ -41,8 +43,10 @@ class MailingSettings(models.Model):
         (STATUS_DONE, 'Завершена'),
     )
 
-    start_time = models.DateTimeField(verbose_name='Время старта')
-    end_time = models.DateTimeField(verbose_name='Время окончания', **NULLABLE)
+    start_time = models.DateTimeField(verbose_name='Время старта', **NULLABLE,
+                                      default=datetime.datetime.now(datetime.timezone.utc))
+    end_time = models.DateTimeField(verbose_name='Время окончания', **NULLABLE,
+                                    default=datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=7))
     period = models.CharField(max_length=20, choices=PERIODS, default=PERIOD_DAILY, verbose_name='Период')
     status = models.CharField(max_length=20, choices=STATUSES, default=STATUS_CREATED, verbose_name='Статус')
 
