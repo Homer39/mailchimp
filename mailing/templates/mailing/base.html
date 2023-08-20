@@ -34,7 +34,7 @@
 
                         <li>
                             <span class="material-symbols-outlined">groups</span>
-                            <a href="{% url 'mailing:clients' %}">Клиенты</a>
+                            <a href="{% url 'mailing:client_list' %}">Клиенты</a>
                         </li>
                         <li>
                             <span class="material-symbols-outlined">message</span>
@@ -53,14 +53,25 @@
                         <hr>
 
                         <h4>Аккаунт</h4>
+                        {% if user.is_authenticated %}
                         <li>
                             <span class="material-symbols-outlined">settings</span>
-                            <a href="#">Профиль</a>
+                            <a href="{% url 'users:profile' %}">Профиль</a>
                         </li>
                         <li>
                             <span class="material-symbols-outlined">logout</span>
-                            <a href="#">Выйти</a>
+                            <a href="{% url 'users:logout' %}">Выйти</a>
                         </li>
+                        {% else %}
+                        <li>
+                            <span class="material-symbols-outlined">login</span>
+                            <a href="{% url 'users:login' %}">Войти</a>
+                        </li>
+                        <li>
+                            <span class="material-symbols-outlined">add_reaction</span>
+                            <a href="{% url 'users:register' %}">Регистрация</a>
+                        </li>
+                        {% endif %}
                         <li>
                             <span class="material-symbols-outlined">support_agent</span>
                             <a href="/admin/">admin</a>

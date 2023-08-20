@@ -1,13 +1,14 @@
 {% extends 'mailing/base.html' %}
 
 {% block content %}
-<div class="container-fluid">
-    <a type="button" class="btn btn-block btn-outline-primary col-2 mb-3"
-       href="#">Добавить рассылку</a>
+<div style="margin-top: 50px">
+    <a type="button" class="btn btn-block btn-outline-success col-2 mb-3"
+       href="{% url 'mailing:settings_create' %}">Добавить рассылку</a>
+</div>
 
-    <table class="table table-hover">
-        <thead>
-        <tr text-center match-height>
+<table class="table table-striped" style="vertical-align:middle">
+    <thead>
+        <tr>
             <th>Время старта</th>
             <th>Время окончания</th>
             <th>Период</th>
@@ -15,28 +16,24 @@
             <th>Сообщение</th>
             <th></th>
         </tr>
-        </thead>
+    </thead>
+    <tbody class="table-group-divider">
         {% for object in object_list %}
-        <tr text-center match-height>
-            <td text-center match-height>
-                <a href="#" title="Изменить">{{ object.start_time }}</a>
-            </td>
-            <td text-center match-height>
-                <a href="#" title="Изменить">{{ object.end_time }}</a>
-            </td>
+        <tr>
+            <td>{{ object.start_time }}</td>
+            <td>{{ object.end_time }}</td>
             <td>{{ object.get_period_display }}</td>
             <td>{{ object.get_status_display }}</td>
             <td>{{ object.message }}</td>
 
-            <td text-center match-height>
-                <a type="button" class="btn btn-block btn-outline-primary"
-                   href="#">Изменить</a>
-                <a type="button" class="btn btn-block btn-outline-primary"
+            <td>
+                <a type="button" class="btn btn-Warning btn-warning text-center match-height"
+                   href="{% url 'mailing:settings_edit' object.pk %}" title="Изменить"><span class="material-symbols-outlined">settings</span></a>
                 <a type="button" class="btn btn-danger btn-warning text-center match-height"
-                   href="#" title="Удалить"> X</a>
+                   href="{% url 'mailing:settings_delete' object.pk %}" title="Удалить"><span class="material-symbols-outlined">close</span></a>
             </td>
         </tr>
         {% endfor %}
-    </table>
-</div>
+    </tbody>
+</table>
 {% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'mailing/base.html' %}
+{% block content %}
+<div style="margin-top: 50px">
+    <a type="button" class="btn btn-block btn-outline-success col-2 mb-3"
+       href="{% url 'mailing:create_client' %}">Добавить клиента</a>
+</div>
+{% for object in object_list %}
+<div class="col-12">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="col">
+            <div class="card bg-transparent h-100">
+                <div class="card-header">
+                    <h5 class="card-title">{{ object.email }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ object.first_name }} {{ object.last_name }}</p>
+                    <p class="card-text">{{ object.comment }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col">
+                            <div role="button" aria-label="Basic outlined example">
+                                <a href="{% url 'mailing:client_edit' object.pk %}"
+                                   class="btn btn-outline-warning">Изменить</a>
+                                <a href="{% url 'mailing:client_delete' object.pk %}"
+                                   class="btn btn-outline-danger">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

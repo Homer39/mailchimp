@@ -80,7 +80,7 @@ class MailingLog(models.Model):
     last_attempt = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время последней попытки')
     try_status = models.CharField(choices=STATUSES, default=STATUS_OK, verbose_name='Статус попытки')
     mailing_service_response = models.TextField(verbose_name='Ответ почтового сервера, если он был', **NULLABLE)
-    client = models.ForeignKey('Client', on_delete=models.CASCADE, verbose_name='Клиент', **NULLABLE)
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, verbose_name='Клиент')
 
     mailing = models.ForeignKey('MailingSettings', on_delete=models.CASCADE, verbose_name='Рассылка')
 

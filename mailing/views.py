@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, TemplateView, UpdateView, DeleteView
+from django.views.generic import ListView, TemplateView, UpdateView, DeleteView, CreateView
 
-from mailing.forms import MailingMessageForm
+from mailing.forms import MailingMessageForm, MailingSettingsForm, ClientForm
 from mailing.models import MailingSettings, Client, MailingMessage
 
 
@@ -10,13 +10,47 @@ def main(request):
     return render(request, 'mailing/main.html')
 
 
+class ClientListView(ListView):
+    model = Client
+    template_name = 'mailing/clients.html'
+
+
+class ClientCreateView(CreateView):
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('client_list')
+
+
+class ClientUpdateView(UpdateView):
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('client_list')
+
+
+class ClientDeleteView(DeleteView):
+    model = Client
+    success_url = reverse_lazy('client_list')
+
+
 class MailingSettingsListView(ListView):
     model = MailingSettings
 
 
-class ClientListView(ListView):
-    model = Client
-    template_name = 'mailing/clients.html'
+class MailingSettingsCreateView(CreateView):
+    model = MailingSettings
+    form_class = MailingSettingsForm
+    success_url = reverse_lazy('mailingsettings_list')
+
+
+class MailingSettingsUpdateView(UpdateView):
+    model = MailingSettings
+    form_class = MailingSettingsForm
+    success_url = reverse_lazy('mailingsettings_list')
+
+
+class MailingSettingsDeleteView(DeleteView):
+    model = MailingSettings
+    success_url = reverse_lazy('mailingsettings')
 
 
 class MailingMessageListView(ListView):
@@ -24,10 +58,17 @@ class MailingMessageListView(ListView):
     template_name = 'mailing/messages.html'
 
 
+class MailingMessageCreateView(CreateView):
+    model = MailingMessage
+    form_class = MailingMessageForm
+    template_name = 'mailing/message_form.html'
+    success_url = reverse_lazy('messages')
+
+
 class MailingMessageUpdateView(UpdateView):
     model = MailingMessage
     form_class = MailingMessageForm
-    template_name = 'mailing/message_update.html'
+    template_name = 'mailing/message_form.html'
     success_url = reverse_lazy('messages')
 
 
