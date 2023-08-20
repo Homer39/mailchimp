@@ -11,9 +11,8 @@
                 <div class="card-body">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-success">
-                        Войти
-                    </button>
+                    <button type="submit" class="btn btn-success">Войти</button>
+                    <a href="{% url 'users:random_password_form' %}" class="btn btn-mute"> Сброс пароля </a>
                 </div>
             </div>
         </div>

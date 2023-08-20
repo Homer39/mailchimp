@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, login
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -9,9 +10,10 @@ from django.views.generic import CreateView, UpdateView
 from django.views import View
 
 from config import settings
-from users.forms import UserRegisterForm, UserProfileForm
-from users.email_verification_token_generator import email_verification_token
+from users.forms import UserRegisterForm, UserProfileForm, RecoverPasswordForm
+from users.services.email_verification_token_generator import email_verification_token
 from users.models import User
+from users.services.random_password import generate_new_password
 
 
 class RegisterView(CreateView):
@@ -60,6 +62,30 @@ class ActivateView(View):
         user.save()
         login(request, user)
         return redirect('users:login')
+
+
+def forget_password_view(request):
+    if request.method == 'POST':
+        recover_form = RecoverPasswordForm(request.POST)
+        if recover_form.is_valid():
+            email = recover_form.cleaned_data['email']
+            try:
+                user = User.objects.get(email=email)
+                generate_new_password(user)
+                return redirect('users:recover_password')
+            except ObjectDoesNotExist:
+                form = RecoverPasswordForm()
+                context = {'form': form,
+                           'user_does_not_exist': recover_form.cleaned_data['email']}
+                return render(request, 'users/random_password_form.html', context)
+    else:
+        form = RecoverPasswordForm()
+        context = {'form': form}
+        return render(request, 'users/random_password_form.html', context=context)
+
+
+def recover_password_view(request):
+    return render(request, 'users/recover_password.html')
 
 
 class ProfileView(UpdateView):
