@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mailing',
+    'blog',
+    'users',
     'django_crontab'
 ]
 
@@ -81,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mailchimp',
-        'USER': 'postgres',
+        'USER': os.getenv('user'),
         'PASSWORD': os.getenv('password')
     }
 }
@@ -141,3 +143,8 @@ EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
 CRONJOBS = [
     ('*/1 * * * *', 'mailing.services.send_mails')
 ]
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'users:login'
