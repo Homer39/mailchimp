@@ -1,5 +1,6 @@
 import datetime
 
+from smtplib import SMTPException
 from django.conf import settings
 from django.core.mail import send_mail
 
@@ -7,18 +8,24 @@ from mailing.models import MailingSettings, MailingLog
 
 
 def _send_email(message_settings, message_client):
-    result = send_mail(
-        subject=message_settings.message.letter_subject,
-        message=message_settings.message.letter_body,
-        from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[message_client.client.email],
-        fail_silently=False
-    )
+    result_txt = ('Усешно отправлена')
+    try:
+        result = send_mail(
+            subject=message_settings.message.letter_subject,
+            message=message_settings.message.letter_body,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[message_client.client.email],
+            fail_silently=False
+        )
+
+    except SMTPException as fail:
+        result_txt = fail
 
     MailingLog.objects.create(
         try_status=MailingLog.STATUS_OK if result else MailingLog.STATUS_FAILED,
         mailing=message_settings,
-        client_id=message_client.client_id
+        client_id=message_client.client_id,
+        mailing_service_response=result_txt
     )
 
 
