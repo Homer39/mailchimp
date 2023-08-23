@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glassmorphism Sidebar HTML and CSS| CodingNepal</title>
+    <title>mailing_chimp</title>
     <!-- Linking Google font link for icons -->
     <link rel="stylesheet" href="{% static 'css/style2.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -44,7 +44,7 @@
                         <h4>Новости</h4>
                         <li>
                             <span class="material-symbols-outlined">list</span>
-                            <a href="#">Блог</a>
+                            <a href="{% url 'blog:blog_list' %}">Блог</a>
                         </li>
                         <li>
                             <span class="material-symbols-outlined">contacts</span>

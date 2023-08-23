@@ -14,6 +14,7 @@
             <th>Период</th>
             <th>Статус</th>
             <th>Сообщение</th>
+            <th>Подписчиков</th>
             <th></th>
         </tr>
     </thead>
@@ -25,6 +26,10 @@
             <td>{{ object.get_period_display }}</td>
             <td>{{ object.get_status_display }}</td>
             <td>{{ object.message }}</td>
+            <td>
+                <a href="{% url 'mailing:mailing_client' object.pk %}">Подписчиков: {{ object.mailingclient_set.count }}</a>
+            </td>
+
 
             <td>
                 <a type="button" class="btn btn-Warning btn-warning text-center match-height"

@@ -1,0 +1,51 @@
+{% extends "mailing/base.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-6">
+        <div class="col-12 mb-5">
+            <p align="center"> Клиенты рассылки</p>
+        </div>
+        {% for object in object_list %}
+        <div class="card bg-transparent">
+            <div class="card-header">
+                {{ object.client.first_name }}
+                {{ object.client.last_name }}
+            </div>
+            <div class="card-body">
+                {{ object.client.email}}
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'mailing:mailing_client_toggle' mailing_pk object.client.pk %}"
+                       class="btn btn-outline-secondary">Удалить</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="col-6">
+        <div class="col-12 mb-5">
+            <p align="center"> Клиенты для добавления </p>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th>Добавить</th>
+            </tr>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.last_name }}</td>
+                <td>{{ client.first_name }}</td>
+                <td>{{ client.email }}</td>
+                <td><a href="{% url 'mailing:mailing_client_toggle' mailing_pk client.pk %}"
+                       class="btn btn-outline-secondary">Добавить</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}

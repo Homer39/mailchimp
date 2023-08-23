@@ -1,0 +1,21 @@
+{% extends 'mailing/base.html' %}
+{% load tags_filters %}
+{% block content %}
+
+<div class="row" style="margin-top:50px">
+    <div class="col-md-8 offset-md-2">
+    <div class="card h-100 bg-transparent centered-top">
+        <img src="/media/{{ object.image }}" class="card-img-top" alt="..." ,>
+        <div class="card-body">
+            <h5 class="card-title">{{ object.title }}</h5>
+            <p <small class="text-muted">({{ object.slug }})</small></p>
+            <p class="card-text">{{ object.text }}</p>
+            <div class="col" align="right" style="margin-top:5px">
+                <p class="card-text"><small class="text-muted">{{ object.creation_date }}</small></p>
+                <p class="card-text"><small class="text-muted">{{ object.view_count }}</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

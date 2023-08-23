@@ -16,6 +16,6 @@ urlpatterns = [
     path('activate/<uidb64>/<token>', ActivateView.as_view(), name='activate'),
     path('confirm_prof/', send_activate_mail_view, name='send_activate_mail'),
 
-path('random_password_form/', forget_password_view, name='random_password_form'),
+    path('random_password_form/', forget_password_view, name='random_password_form'),
     path('recover_password/', recover_password_view, name='recover_password'),
 ]
