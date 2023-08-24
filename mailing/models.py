@@ -1,4 +1,5 @@
 import datetime
+from django.conf import settings
 
 from django.db import models
 
@@ -13,6 +14,9 @@ class Client(models.Model):
     first_name = models.CharField(max_length=100, verbose_name='Имя')
     last_name = models.CharField(max_length=100, verbose_name='Фамилия')
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
+
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Пользователь')
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} - {self.email}'
@@ -52,17 +56,27 @@ class MailingSettings(models.Model):
 
     message = models.ForeignKey('MailingMessage', on_delete=models.CASCADE, verbose_name='Сообщение', **NULLABLE)
 
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Пользователь')
+
     def __str__(self):
         return f'{self.start_time} / {self.period}'
 
     class Meta:
         verbose_name = 'Настройка'
         verbose_name_plural = 'Настройки'
+        # Отключение рассылок
+        permissions = [
+            ('set_status',
+             'Can change status')
+        ]
 
 
 class MailingMessage(models.Model):
     letter_subject = models.CharField(max_length=100, verbose_name='Тема письма')
     letter_body = models.TextField(verbose_name='Тело письма')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Пользователь')
 
     def __str__(self):
         return f'Тема: {self.letter_subject}'
@@ -87,6 +101,8 @@ class MailingLog(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE, verbose_name='Клиент')
 
     mailing = models.ForeignKey('MailingSettings', on_delete=models.CASCADE, verbose_name='Рассылка')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Пользователь')
 
     def __str__(self):
         return f'{self.last_attempt} - {self.try_status}'
@@ -99,6 +115,8 @@ class MailingLog(models.Model):
 class MailingClient(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE, verbose_name='клиент')
     mailing = models.ForeignKey('MailingSettings', on_delete=models.CASCADE, verbose_name='рассылка')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE,
+                              verbose_name='Пользователь')
 
     def __str__(self):
         return f'{self.client} - {self.mailing}'

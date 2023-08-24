@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -15,12 +16,13 @@ class BlogListView(ListView):
         return queryset
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
     fields = ('title', 'text', 'image', 'is_published',)
     success_url = reverse_lazy('blog:blog_list')
 
     def form_valid(self, form):
+        """Создаю слаг"""
         if form.is_valid():
             new_blog = form.save()
             new_blog.slug = slugify(new_blog.title)
@@ -33,18 +35,20 @@ class BlogDetailView(DetailView):
     model = Blog
 
     def get_object(self, queryset=None):
+        """Веду количество просмотров"""
         self.object = super().get_object(queryset)
         self.object.view_count += 1
         self.object.save()
         return self.object
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(LoginRequiredMixin, UpdateView):
     model = Blog
     fields = ('title', 'text', 'image', 'is_published')
     success_url = reverse_lazy('blog:blog_list')
 
     def form_valid(self, form):
+        """Обновляю слаг"""
         if form.is_valid():
             new_blog = form.save()
             new_blog.slug = slugify(new_blog.title)
@@ -53,12 +57,13 @@ class BlogUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(LoginRequiredMixin, DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:blog_list')
 
 
 def toggle_published(request, pk):
+    """Проверка публикации"""
     blog = get_object_or_404(Blog, pk=pk)
     if blog.is_published:
         blog.is_published = False

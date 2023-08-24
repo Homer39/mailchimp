@@ -31,3 +31,9 @@ class MailingMessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = MailingMessage
         fields = '__all__'
+
+
+class MailingSettingsForManagerForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = MailingSettings
+        fields = ('status',)

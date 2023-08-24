@@ -1,6 +1,41 @@
 {% extends 'mailing/base.html' %}
+{% load tags_filters %}
 {% block content %}
 
-<div class=""
+<div class="col-12">
+    <div class="card mb-5 bg-transparent" style="margin-top: 50px">
+        <div class="card-header">
+            <h1>Cервис рассылок</h1>
+        </div>
+        <div class="card-body">
+            <p>Всего рассылок : {{ count_mailing }}</p>
+            <p>Активных рассылок всего : {{ count_mailing_active }}</p>
+            <p>Количество уникальных клиентов для рассылок : {{ count_unique_customers }}</p>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    {% for object in mailing_blog %}
+    {% if object.is_published %}
+    <div class="col-4">
+        <div class="card bg-transparent">
+            <div class="card-body">
+                <div class="card-header">
+                    <h5> {{ object.title }}</h5>
+                </div>
+                <div class="card-body">
+                    <img src="{{ object.image|mediapath }}" class="card-img-top" alt="...">
+                </div>
+                <div class="card-footer">
+                    <a href="{% url 'blog:detail_blog' object.pk %}" class="btn btn-outline-warning border-1">View
+                    </a>
+                </div>
+                <p>{{ object.content|truncatechars:100 }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
 
 {% endblock %}

@@ -27,15 +27,21 @@
             <td>{{ object.get_status_display }}</td>
             <td>{{ object.message }}</td>
             <td>
+                {% if perms.mailing.change_mailingsettings %}
                 <a href="{% url 'mailing:mailing_client' object.pk %}">Подписчиков: {{ object.mailingclient_set.count }}</a>
+                {% else %}
+                Подписчиков: {{ object.mailingclient_set.count }}
+                {% endif %}
             </td>
 
 
             <td>
                 <a type="button" class="btn btn-Warning btn-warning text-center match-height"
                    href="{% url 'mailing:settings_edit' object.pk %}" title="Изменить"><span class="material-symbols-outlined">settings</span></a>
+                {% if perms.mailing.delete_mailingsettings %}
                 <a type="button" class="btn btn-danger btn-warning text-center match-height"
                    href="{% url 'mailing:settings_delete' object.pk %}" title="Удалить"><span class="material-symbols-outlined">close</span></a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

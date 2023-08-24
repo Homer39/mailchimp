@@ -22,6 +22,7 @@ class RegisterView(CreateView):
     template_name = 'users/register.html'
     success_url = reverse_lazy('users:send_activate_mail')
 
+    # Отправка письма для верефикации
     def form_valid(self, form):
         new_user = form.save()
         new_user.is_active = False
@@ -41,7 +42,7 @@ def send_activate_mail_view(request):
 
 
 class ActivateView(View):
-
+    """Активация (верификация) пользователя через токен"""
     def get_user_from_email_verification_token(self, uid, token: str):
         try:
             uid = force_str(urlsafe_base64_decode(uid))
@@ -65,6 +66,7 @@ class ActivateView(View):
 
 
 def forget_password_view(request):
+    """Генерирует пароль и отправляет его на почту"""
     if request.method == 'POST':
         recover_form = RecoverPasswordForm(request.POST)
         if recover_form.is_valid():

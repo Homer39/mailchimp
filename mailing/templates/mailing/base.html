@@ -27,19 +27,28 @@
                             <span class="material-symbols-outlined">home</span>
                             <a href="{% url 'mailing:main' %}">Главная</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li>
                             <span class="material-symbols-outlined">mail</span>
                             <a href="{% url 'mailing:mailingsettings_list' %}">Рассылки</a>
                         </li>
-
+                            {% if perms.mailing.view_client %}
                         <li>
                             <span class="material-symbols-outlined">groups</span>
                             <a href="{% url 'mailing:client_list' %}">Клиенты</a>
                         </li>
+                            {% endif %}
+                            {% if perms.mailing.view_mailingmessage %}
                         <li>
                             <span class="material-symbols-outlined">message</span>
                             <a href="{% url 'mailing:messages' %}">Сообщение</a>
                         </li>
+                            {% endif %}
+                        <li>
+                            <span class="material-symbols-outlined">info</span>
+                            <a href="{% url 'mailing:mailing_logs' %}">Информация</a>
+                        </li>
+                        {% endif %}
                         <hr>
                         <h4>Новости</h4>
                         <li>

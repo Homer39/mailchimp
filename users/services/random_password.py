@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 
 
 def generate_new_password(user: User):
+    """Создание нового пароля для существующего пользователя"""
     new_password = User.objects.make_random_password(length=12)
     user.set_password(str(new_password))
     user.save()

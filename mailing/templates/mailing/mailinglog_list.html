@@ -1,0 +1,30 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div style="margin-top: 50px">
+
+    <table class="table table-striped" style="vertical-align:middle">
+        <thead>
+        <tr>
+            <th>Дата и время последней попытки</th>
+            <th>Статус попытки</th>
+            <th>Ответ почтового сервера</th>
+            <th>Клиент</th>
+            <th>Рассылка</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for object in object_list %}
+        <tr>
+            <td>{{ object.last_attempt }}</td>
+            <td>{{ object.try_status }}</td>
+            <td>{{ object.mailing_service_response }}</td>
+            <td>{{ object.client }}</td>
+            <td>{{ object.mailing }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
